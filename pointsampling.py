@@ -4,42 +4,29 @@ import random
 
 population = 200
 
-def random_point(polypicklist):
-
-	randompoly = []
-
-	polychoice = random.choice(polypicklist)
-	randompoly.append(polychoice)
-
-	A = randompoly[0][0]
-	B = randompoly[0][1]
-	C = randompoly[0][2]
+def random_point(A, B, C):
 
 	u = random.uniform(0.0, 1.0)
 	v = random.uniform(0.0, 1.0)
-
+	
 	if (u + v) <= 1:
 		
-		random_point.result = ((((B - A) * u) + ((C - A) * v)) + A)
-			
-	# if point outside
-	elif (u + v) > 1:
+		random_point.result = (B - A) * u + (C - A) * v + A
+		
+	else:
 		
 		# flip the direction
 		u = 1 - u
 		v = 1 - v
 		
-		random_point.result = ((((B - A) * u) + ((C - A) * v)) + A)
-
-	return
-
+		random_point.result = (B - A) * u + (C - A) * v + A
+		
 context = bpy.context
 
 selection = context.selected_objects
 
 active_canvas = selection[1]
 active_instance = selection[0]
-
 
 # get all polygons, their areas, vertices
 
@@ -89,7 +76,9 @@ for u in range(len(cumul_distribution)):
 
 for t in range(population):
 	
-	random_point(polypicklist)
+	polychoice = random.choice(polypicklist)
+
+	random_point(polychoice[0], polychoice[1], polychoice[2])
 	pointlist.append(random_point.result)
 
 for l in pointlist:
